@@ -7,6 +7,10 @@
 Formula size offers 75%, 100%, 125%, 150%, and 200%, relative to the text size.
 This preference is shared by clients of the selected host and affects only math.
 Reset formula size restores 100% without changing prose, Mermaid, or module switches.
+Display formula alignment offers **Centered** (default) and **Left**. Formulas
+that still overflow after the automatic shrink, and tall inline formulas moved
+into a block, stay left-aligned in both modes so they scroll from their first
+character.
 
 Each paragraph/list/table cell measures its own width. A formula can shrink by
 up to 15% to fit; longer formulas keep their reading size and scroll horizontally.
@@ -85,7 +89,8 @@ Settings → Plugins → Advanced Markdown, per host:
   widths and scroll horizontally inside the message instead of squeezing every
   column to a fraction of the message width.
 - Text size inside plugin rows.
-- Formula size and its independent reset.
+- Formula size, display formula alignment, and Reset formula size, which leaves
+  other preferences alone.
 - Runtime status: engine versions, browser, cache directory, queue and cache
   counts.
 

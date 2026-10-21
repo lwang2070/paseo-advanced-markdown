@@ -12,6 +12,7 @@ import {
   type TextStyle,
 } from "react-native";
 import { isRetryableMathResult, type MathRenderOutput } from "../shared/rpc.js";
+import type { MathAlignment } from "../shared/settings.js";
 import { ContentPlaceholder } from "./content-placeholder.js";
 import { ImageScrollView } from "./image-scroll-view.js";
 import { preferredFormulaScale } from "./formula-scale.js";
@@ -41,6 +42,7 @@ export type FormulaProps = {
   trailingPunctuation?: ReactNode[];
   onOpenLink?: () => void;
   mathScale?: number;
+  mathAlignment?: MathAlignment;
   color: string;
   hostId: string;
   theme: PluginTheme;
@@ -81,6 +83,7 @@ export const Formula = memo(function Formula(props: FormulaProps) {
     formulaId,
     viewerId,
     mathScale,
+    mathAlignment = "center",
     onOpenLink,
   } = props;
   const layout = useContext(MathLayoutContext);
@@ -241,6 +244,7 @@ export const Formula = memo(function Formula(props: FormulaProps) {
     const height = rendered.height * fit.scale;
     const descent = Math.max(0, rendered.height - rendered.baseline) * fit.scale;
     const centered = centerDisplayFormula({
+      alignment: mathAlignment,
       block,
       promoted: promoted === true,
       contentWidth: width,

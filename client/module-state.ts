@@ -28,7 +28,8 @@ function createModuleState(): ModuleStateApi {
         values.codeBlocks === current.codeBlocks &&
         values.tables === current.tables &&
         values.fontScale === current.fontScale &&
-        values.mathScale === current.mathScale
+        values.mathScale === current.mathScale &&
+        values.mathAlignment === current.mathAlignment
       )
         return;
       current = values;

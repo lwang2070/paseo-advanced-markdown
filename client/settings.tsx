@@ -14,9 +14,11 @@ import { Text } from "react-native";
 import { runtimeStatus } from "../shared/rpc.js";
 import {
   FONT_SCALES,
+  MATH_ALIGNMENTS,
   MATH_SCALES,
   moduleSettings,
   type FontScale,
+  type MathAlignment,
   type MathScale,
   type ModuleSettings,
 } from "../shared/settings.js";
@@ -26,6 +28,11 @@ const FONT_LABELS: Record<FontScale, string> = {
   small: "Small",
   default: "Default",
   large: "Large",
+};
+
+const ALIGNMENT_LABELS: Record<MathAlignment, string> = {
+  center: "Centered (default)",
+  left: "Left",
 };
 
 export function SettingsScreen({ theme, host }: PluginSurfaceProps) {
@@ -123,6 +130,17 @@ export function SettingsScreen({ theme, host }: PluginSurfaceProps) {
                 }))}
                 disabled={settings.saving}
                 onValueChange={(value) => void update({ mathScale: Number(value) as MathScale })}
+              />
+              <SettingsSelect
+                label="Display formula alignment"
+                hint="Applies to formulas on their own line. A formula that still overflows after shrinking stays left-aligned so it scrolls from its first character."
+                value={settings.values.mathAlignment}
+                options={MATH_ALIGNMENTS.map((value) => ({
+                  value,
+                  label: ALIGNMENT_LABELS[value],
+                }))}
+                disabled={settings.saving}
+                onValueChange={(value) => void update({ mathAlignment: value as MathAlignment })}
               />
               <SettingsAction
                 label="Reset formula size"

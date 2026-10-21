@@ -160,6 +160,7 @@ const MemoizedMessage = memo(
             expression={node.content}
             texSource={metaString(meta, "texSource")}
             mathScale={modules.mathScale}
+            mathAlignment={modules.mathAlignment}
             source={source}
             display={metaBoolean(meta, "display") ?? node.type === MATH_BLOCK}
             block={node.type === MATH_BLOCK}
@@ -283,6 +284,7 @@ const MemoizedMessage = memo(
       layout.compact,
       modules.math,
       modules.mathScale,
+      modules.mathAlignment,
       modules.mermaid,
       modules.tables,
       mermaidTheme,
@@ -348,6 +350,7 @@ const MemoizedMessage = memo(
       previous.modules.codeBlocks === next.modules.codeBlocks &&
       previous.modules.fontScale === next.modules.fontScale &&
       previous.modules.mathScale === next.modules.mathScale &&
+      previous.modules.mathAlignment === next.modules.mathAlignment &&
       a.surface0 === b.surface0 &&
       a.foreground === b.foreground &&
       a.foregroundMuted === b.foregroundMuted &&

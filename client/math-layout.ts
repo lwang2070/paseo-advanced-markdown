@@ -1,3 +1,5 @@
+import type { MathAlignment } from "../shared/settings.js";
+
 /** Automatic fitting may not erase the user's reading-size preference. */
 export const MIN_AUTOMATIC_MATH_FIT = 0.85;
 export const MATH_DENSITY_BUCKETS = [1, 2, 3, 4, 6, 8] as const;
@@ -35,22 +37,25 @@ export function fitFormula({
 }
 
 /**
- * Display formulas live in a horizontal scroller. Centre one that fits, but
- * keep an overflowing one left-aligned: a scroller starts at its left edge, so
- * centring wider-than-viewport content makes the left part unreachable.
+ * Display formulas live in a horizontal scroller. Centre one that fits when the
+ * host asks for centring, but always keep an overflowing one left-aligned: a
+ * scroller starts at its left edge, so centring wider-than-viewport content
+ * makes the left part unreachable.
  */
 export function centerDisplayFormula({
+  alignment,
   block,
   promoted,
   contentWidth,
   containerWidth,
 }: {
+  alignment: MathAlignment;
   block: boolean;
   promoted: boolean;
   contentWidth: number;
   containerWidth: number;
 }): boolean {
-  if (!block || promoted) return false;
+  if (alignment !== "center" || !block || promoted) return false;
   if (!positive(contentWidth) || !positive(containerWidth)) return false;
   return contentWidth <= containerWidth;
 }

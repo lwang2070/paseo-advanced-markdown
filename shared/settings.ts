@@ -5,6 +5,8 @@ export const FONT_SCALES = ["small", "default", "large"] as const;
 export type FontScale = (typeof FONT_SCALES)[number];
 export const MATH_SCALES = [0.75, 1, 1.25, 1.5, 2] as const;
 export type MathScale = (typeof MATH_SCALES)[number];
+export const MATH_ALIGNMENTS = ["center", "left"] as const;
+export type MathAlignment = (typeof MATH_ALIGNMENTS)[number];
 
 /** Host-scoped module switches. A disabled module shows its source instead of rendering. */
 export const moduleSettings = defineSettings({
@@ -18,6 +20,7 @@ export const moduleSettings = defineSettings({
     tables: z.boolean().default(false),
     fontScale: z.enum(FONT_SCALES).default("default"),
     mathScale: z.literal(MATH_SCALES).default(1),
+    mathAlignment: z.enum(MATH_ALIGNMENTS).default("center"),
   }),
 });
 

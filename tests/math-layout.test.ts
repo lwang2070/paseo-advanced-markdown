@@ -358,7 +358,13 @@ describe("native inline formula height", () => {
 });
 
 describe("display formula alignment", () => {
-  const block = { block: true, promoted: false, contentWidth: 200, containerWidth: 400 };
+  const block = {
+    alignment: "center" as const,
+    block: true,
+    promoted: false,
+    contentWidth: 200,
+    containerWidth: 400,
+  };
 
   it("centres a display formula that fits", () => {
     expect(centerDisplayFormula(block)).toBe(true);
@@ -372,6 +378,10 @@ describe("display formula alignment", () => {
   it("does not centre inline formulas promoted to a block", () => {
     expect(centerDisplayFormula({ ...block, promoted: true })).toBe(false);
     expect(centerDisplayFormula({ ...block, block: false })).toBe(false);
+  });
+
+  it("keeps display formulas left-aligned when the user selects left", () => {
+    expect(centerDisplayFormula({ ...block, alignment: "left" })).toBe(false);
   });
 
   it("centres the width a shrink-to-fit result produces but not an overflowing one", () => {

@@ -66,7 +66,7 @@ fenced code and Markdown tables through the plugin, so long lines scroll instead
 of wrapping and wide tables stay readable on phones. **Open table** provides
 Markdown and TSV copying inside the viewer.
 
-Change text size, formula size, and enabled modules in
+Change text size, formula size, alignment for formulas on their own line, and enabled modules in
 **Settings → Plugins → Advanced Markdown**.
 
 ## Compatibility and details
