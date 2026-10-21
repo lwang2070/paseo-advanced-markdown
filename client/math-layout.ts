@@ -34,6 +34,27 @@ export function fitFormula({
   return { scale, overflow: true, measured: true };
 }
 
+/**
+ * Display formulas live in a horizontal scroller. Centre one that fits, but
+ * keep an overflowing one left-aligned: a scroller starts at its left edge, so
+ * centring wider-than-viewport content makes the left part unreachable.
+ */
+export function centerDisplayFormula({
+  block,
+  promoted,
+  contentWidth,
+  containerWidth,
+}: {
+  block: boolean;
+  promoted: boolean;
+  contentWidth: number;
+  containerWidth: number;
+}): boolean {
+  if (!block || promoted) return false;
+  if (!positive(contentWidth) || !positive(containerWidth)) return false;
+  return contentWidth <= containerWidth;
+}
+
 export interface InlineFormulaLayout {
   lineHeight: number;
   promote: boolean;

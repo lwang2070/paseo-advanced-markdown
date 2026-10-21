@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { formulaScale, preferredFormulaScale } from "../client/formula-scale.js";
 import {
+  centerDisplayFormula,
   chooseMathDensity,
   fitFormula,
   inlineFormulaLayout,
@@ -352,6 +353,48 @@ describe("native inline formula height", () => {
         lineHeight: 30,
         promote: false,
       });
+    },
+  );
+});
+
+describe("display formula alignment", () => {
+  const block = { block: true, promoted: false, contentWidth: 200, containerWidth: 400 };
+
+  it("centres a display formula that fits", () => {
+    expect(centerDisplayFormula(block)).toBe(true);
+    expect(centerDisplayFormula({ ...block, contentWidth: 400 })).toBe(true);
+  });
+
+  it("keeps an overflowing formula left-aligned so the left edge stays reachable", () => {
+    expect(centerDisplayFormula({ ...block, contentWidth: 401 })).toBe(false);
+  });
+
+  it("does not centre inline formulas promoted to a block", () => {
+    expect(centerDisplayFormula({ ...block, promoted: true })).toBe(false);
+    expect(centerDisplayFormula({ ...block, block: false })).toBe(false);
+  });
+
+  it("centres the width a shrink-to-fit result produces but not an overflowing one", () => {
+    const shrunk = fitFormula({ width: 200, preferredScale: 1.5, availableWidth: 255 });
+    expect(shrunk.overflow).toBe(false);
+    expect(
+      centerDisplayFormula({ ...block, contentWidth: 200 * shrunk.scale, containerWidth: 255 }),
+    ).toBe(true);
+
+    const overflow = fitFormula({ width: 200, preferredScale: 1.5, availableWidth: 254 });
+    expect(overflow.overflow).toBe(true);
+    expect(
+      centerDisplayFormula({ ...block, contentWidth: 200 * overflow.scale, containerWidth: 254 }),
+    ).toBe(false);
+  });
+
+  it.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY])(
+    "waits for valid positive geometry instead of centring input %s",
+    (value) => {
+      expect(centerDisplayFormula({ ...block, contentWidth: value }), "contentWidth").toBe(false);
+      expect(centerDisplayFormula({ ...block, containerWidth: value }), "containerWidth").toBe(
+        false,
+      );
     },
   );
 });

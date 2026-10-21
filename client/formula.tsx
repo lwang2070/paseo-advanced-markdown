@@ -16,7 +16,12 @@ import { ContentPlaceholder } from "./content-placeholder.js";
 import { ImageScrollView } from "./image-scroll-view.js";
 import { preferredFormulaScale } from "./formula-scale.js";
 import { MathInlineLineHeightContext, MathLayoutContext } from "./math-context.js";
-import { chooseMathDensity, fitFormula, inlineFormulaLayout } from "./math-layout.js";
+import {
+  centerDisplayFormula,
+  chooseMathDensity,
+  fitFormula,
+  inlineFormulaLayout,
+} from "./math-layout.js";
 import type { CachedRender } from "./render-cache.js";
 import { useMathImage } from "./use-math-image.js";
 import { useContentViewer, type ViewerSelection } from "./viewer-context.js";
@@ -235,6 +240,12 @@ export const Formula = memo(function Formula(props: FormulaProps) {
     const width = rendered.width * fit.scale;
     const height = rendered.height * fit.scale;
     const descent = Math.max(0, rendered.height - rendered.baseline) * fit.scale;
+    const centered = centerDisplayFormula({
+      block,
+      promoted: promoted === true,
+      contentWidth: width,
+      containerWidth: blockWidth,
+    });
     const image = (
       <Image
         key={key}
@@ -252,7 +263,12 @@ export const Formula = memo(function Formula(props: FormulaProps) {
         showsHorizontalScrollIndicator
         nestedScrollEnabled
         style={{ maxWidth: "100%", marginVertical: promoted ? 4 : 0 }}
-        contentContainerStyle={{ alignItems: "flex-end" }}
+        contentContainerStyle={{
+          alignItems: "flex-end",
+          // Fill the measured block so a formula that fits can sit in the middle.
+          // Overflowing content keeps the default (content-width, left-aligned) row.
+          ...(centered ? { width: blockWidth, justifyContent: "center" as const } : null),
+        }}
       >
         <Pressable {...entry} accessibilityRole="button" accessibilityLabel="Inspect formula">
           {image}
